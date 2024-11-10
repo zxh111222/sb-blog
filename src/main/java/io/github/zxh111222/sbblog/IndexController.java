@@ -3,6 +3,7 @@ package io.github.zxh111222.sbblog;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class IndexController {
@@ -10,4 +11,11 @@ public class IndexController {
     public String index() {
         return "index";
     }
+
+    @ResponseBody
+    @GetMapping("/hello")
+    public String hello() {
+        return "hello";
+    }
+
 }
