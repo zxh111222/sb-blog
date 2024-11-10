@@ -13,18 +13,18 @@ public class BackendBlogController {
 
     @GetMapping("blog")
     public String list() {
-        return "backend/backend-list";
+        return "backend/list";
     }
 
     @GetMapping("blog/{id}")
     public String show(@PathVariable String id) {
         System.out.println("id = " + id);
-        return "backend/backend-show";
+        return "backend/show";
     }
 
     @GetMapping("blog/add")
     public String add() {
-        return "backend/backend-add";
+        return "backend/add";
     }
 
     @PostMapping("blog/add")
@@ -32,5 +32,17 @@ public class BackendBlogController {
     public String save() {
         System.out.println("接收到 Post 请求");
         return "保存成功！";
+    }
+
+    @GetMapping("blog/edit")
+    public String edit() {
+        return "backend/edit";
+    }
+
+    @PostMapping("blog/edit")
+    @ResponseBody
+    public String update() {
+        System.out.println("接收到 Post 请求");
+        return "修改成功！";
     }
 }
