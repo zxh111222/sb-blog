@@ -12,7 +12,7 @@ public class BlogController {
     }
 
     @GetMapping("{id}")
-    public String show(@PathVariable String id) {
+    public String show(@PathVariable Long id) {
         System.out.println("id = " + id);
         return "backend/show";
     }
