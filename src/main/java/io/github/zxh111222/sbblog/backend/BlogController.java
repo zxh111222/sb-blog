@@ -3,7 +3,7 @@ package io.github.zxh111222.sbblog.backend;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@Controller("BackendBlogController")
 @RequestMapping("backend/blog")
 public class BlogController {
     @GetMapping()
