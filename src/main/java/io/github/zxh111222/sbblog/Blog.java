@@ -4,19 +4,22 @@ public class Blog {
     private Long id;
     private String title;
     private String content;
+    private String cover;
 
     public Blog() {
     }
 
-    public Blog(String title, String content) {
+    public Blog(String title, String content, String cover) {
         this.title = title;
         this.content = content;
+        this.cover = cover;
     }
 
-    public Blog(Long id, String title, String content) {
+    public Blog(Long id, String title, String content, String cover) {
         this.id = id;
         this.title = title;
         this.content = content;
+        this.cover = cover;
     }
 
     public Long getId() {
@@ -41,5 +44,13 @@ public class Blog {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
     }
 }

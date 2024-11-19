@@ -17,7 +17,7 @@ public class BlogController {
     public String list(Model model) {
         List<Blog> blogs = new ArrayList<Blog>();
         for (int i = 1; i <= 4; i++) {
-            Blog blog = new Blog(Long.parseLong(i + ""), "title-" + i, "content-blablabla" + i);
+            Blog blog = new Blog(Long.parseLong(i + ""), "title-" + i, "content-blablabla" + i, "/img/cover/default-cover.png");
             blogs.add(blog);
         }
         model.addAttribute("blogs", blogs);
