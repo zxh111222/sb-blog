@@ -1,5 +1,6 @@
 package io.github.zxh111222.sbblog.backend;
 
+import io.github.zxh111222.sbblog.Blog;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,11 +23,12 @@ public class BlogController {
         return "backend/add";
     }
 
-    @PostMapping("add")
-    @ResponseBody
-    public String save() {
+    @PostMapping(value = "add")
+//    @ResponseBody
+    public String save(Blog blog) {
+        System.out.println(blog);
         System.out.println("接收到 Post 请求");
-        return "保存成功！";
+        return "redirect:/backend/blog";
     }
 
     @GetMapping("edit")
