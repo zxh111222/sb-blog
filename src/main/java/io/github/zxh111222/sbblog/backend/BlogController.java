@@ -1,12 +1,18 @@
 package io.github.zxh111222.sbblog.backend;
 
 import io.github.zxh111222.sbblog.Blog;
+import io.github.zxh111222.sbblog.BlogRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller("BackendBlogController")
 @RequestMapping("backend/blog")
 public class BlogController {
+    @Autowired
+    BlogRepository blogRepository;
+
+
     @GetMapping()
     public String list() {
         return "backend/list";
@@ -27,7 +33,7 @@ public class BlogController {
 //    @ResponseBody
     public String save(Blog blog) {
         System.out.println(blog);
-        System.out.println("接收到 Post 请求");
+        blogRepository.save(blog);
         return "redirect:/backend/blog";
     }
 
