@@ -42,15 +42,20 @@ public class BlogController {
         return "redirect:/backend/blog";
     }
 
-    @GetMapping("edit")
-    public String edit() {
+    @GetMapping("edit/{id}")
+    public String edit(@PathVariable Long id, Model model) {
+        Blog blog = blogRepository.findById(id).orElseThrow(() -> new RuntimeException("博客不存在"));
+        model.addAttribute("blog", blog);
         return "backend/edit";
     }
 
     @PostMapping("edit")
-    @ResponseBody
-    public String update() {
-        System.out.println("接收到 Post 请求");
-        return "修改成功！";
+//    @ResponseBody
+    public String update(Blog updatedBlog) {
+        Blog blog = blogRepository.findById(updatedBlog.getId()).orElseThrow(() -> new RuntimeException("博客不存在"));
+        blog.setTitle(updatedBlog.getTitle());
+        blog.setContent(updatedBlog.getContent());
+        blogRepository.save(blog);
+        return "redirect:/backend/blog";
     }
 }
