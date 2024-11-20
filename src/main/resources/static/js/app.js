@@ -25,3 +25,16 @@ import AOS from 'aos';
 import 'aos/dist/aos.css'; // You can also use <link> for styles
 
 AOS.init();
+
+// Import Tocbot - Generate a table of contents based on the heading structure of an html document
+import tocbot from 'tocbot'
+// Initialize tocbot
+document.addEventListener('DOMContentLoaded', function () {
+    tocbot.init({
+        tocSelector: '.js-toc',
+        contentSelector: '.js-toc-content',
+        headingSelector: 'h1, h2, h3, h4, h5, h6',
+        hasInnerContainers: true,
+        collapseDepth: 6,
+    });
+});
