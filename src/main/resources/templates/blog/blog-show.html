@@ -1,6 +1,5 @@
 <div th:replace="~{ app :: layout ('博客详情', ~{::#css}, ~{::#main}, ~{::#js}) }" xmlns:th="http://www.thymeleaf.org">
-
-    <link id="css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot/dist/tocbot.css">
+    <link id="css" rel="stylesheet" href="/tocbot/dist/tocbot.css">
 
     <main id="main" class="my-2rem">
         <article class="blog-show container">
@@ -46,23 +45,19 @@
     </main>
 
     <div id="js">
-        <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/tocbot/dist/tocbot.min.js"></script>
+        <script type="module" src="/tocbot/dist/tocbot.js"></script>
         <script>
-            $(function() {
+            document.addEventListener('DOMContentLoaded', function () {
                 tocbot.init({
-                    // Where to render the table of contents.
                     tocSelector: '.js-toc',
-                    // Where to grab the headings to build the table of contents.
                     contentSelector: '.js-toc-content',
-                    // Which headings to grab inside of the contentSelector element.
                     headingSelector: 'h1, h2, h3, h4, h5, h6',
-                    // For headings inside relative or absolute positioned containers within content.
                     hasInnerContainers: true,
                     collapseDepth: 6,
                 });
             });
         </script>
     </div>
+
 
 </div>
