@@ -1,11 +1,14 @@
-<div th:replace="~{ app :: layout ('博客详情', _, ~{::#main}, _) }" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{ app :: layout ('博客详情', ~{::#css}, ~{::#main}, ~{::#js}) }" xmlns:th="http://www.thymeleaf.org">
+
+    <link id="css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot/dist/tocbot.css">
+
     <main id="main" class="my-2rem">
         <article class="blog-show container">
             <div class="row">
                 <div class="col-lg-8">
                     <h1>maven 加速，修改镜像源</h1>
                     <p class="meta text-muted mb-2rem"><a href="#">admin</a> - 2024-11-18 08:35:28</p>
-                    <div class="animate__animated animate__fadeInLeft">
+                    <div class="animate__animated animate__fadeInLeft js-toc-content">
                         <h3 id="what">What</h3>
                         <p>正文显示在这...</p>
                         <p>正文显示在这...</p>
@@ -35,28 +38,31 @@
                         <p>正文显示在这...</p>
                     </div>
                 </div>
-
                 <div class="col-lg-3 offset-lg-1">
-                    <div id="outline" class="sticky-top d-none d-lg-block animate__animated animate__fadeInRight animate__delay-1s">
-                        <ul>
-                            <li>
-                                <a href="#what">What</a>
-                                <ul>
-                                    <li><a href="#are">are</a></li>
-                                    <li><a href="#you">you</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#doing">Doing</a>
-                                <ul>
-                                    <li><a href="#now">now</a></li>
-                                    <li><a href="#blablabla">blablabla...</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
+                    <div id="outline" class="js-toc toc sticky-top d-none d-lg-block animate__animated animate__fadeInRight animate__delay-1s"></div>
                 </div>
             </div>
         </article>
     </main>
+
+    <div id="js">
+        <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/tocbot/dist/tocbot.min.js"></script>
+        <script>
+            $(function() {
+                tocbot.init({
+                    // Where to render the table of contents.
+                    tocSelector: '.js-toc',
+                    // Where to grab the headings to build the table of contents.
+                    contentSelector: '.js-toc-content',
+                    // Which headings to grab inside of the contentSelector element.
+                    headingSelector: 'h1, h2, h3, h4, h5, h6',
+                    // For headings inside relative or absolute positioned containers within content.
+                    hasInnerContainers: true,
+                    collapseDepth: 6,
+                });
+            });
+        </script>
+    </div>
+
 </div>
