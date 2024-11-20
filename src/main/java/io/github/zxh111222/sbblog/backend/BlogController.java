@@ -3,6 +3,9 @@ package io.github.zxh111222.sbblog.backend;
 import io.github.zxh111222.sbblog.Blog;
 import io.github.zxh111222.sbblog.BlogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,14 +20,22 @@ public class BlogController {
 
 
     @GetMapping()
-    public String list(@RequestParam(value = "search", required = false) String search, Model model) {
-        List<Blog> blogs;
+    public String list(
+            @RequestParam(value = "search", required = false) String search,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "5") int size,
+            Model model) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Blog> blogs;
         if (search != null && !search.trim().isEmpty()) {
-            blogs = blogRepository.findByTitleContaining(search.trim());
+            blogs = blogRepository.findByTitleContaining(search.trim(), pageable);
         } else {
-            blogs = blogRepository.findAll();
+            blogs = blogRepository.findAll(pageable);
         }
-        model.addAttribute("blogs", blogs);
+        model.addAttribute("blogs", blogs.getContent());
+        model.addAttribute("currentPage", page); // 当前页码
+        model.addAttribute("totalPages", blogs.getTotalPages()); // 总页数
+        model.addAttribute("totalRecords", blogs.getTotalElements()); //总记录数
         model.addAttribute("search", search);
         return "backend/list";
     }
