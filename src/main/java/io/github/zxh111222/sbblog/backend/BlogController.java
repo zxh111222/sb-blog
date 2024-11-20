@@ -4,7 +4,10 @@ import io.github.zxh111222.sbblog.Blog;
 import io.github.zxh111222.sbblog.BlogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller("BackendBlogController")
 @RequestMapping("backend/blog")
@@ -14,7 +17,9 @@ public class BlogController {
 
 
     @GetMapping()
-    public String list() {
+    public String list(Model model) {
+        List<Blog> blogs = blogRepository.findAll();
+        model.addAttribute("blogs", blogs);
         return "backend/list";
     }
 
