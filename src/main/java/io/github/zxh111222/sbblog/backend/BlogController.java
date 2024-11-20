@@ -58,4 +58,10 @@ public class BlogController {
         blogRepository.save(blog);
         return "redirect:/backend/blog";
     }
+
+    @GetMapping("delete/{id}")
+    public String delete(@PathVariable Long id) {
+        blogRepository.deleteById(id);
+        return "redirect:/backend/blog";
+    }
 }

@@ -136,7 +136,7 @@
                                 <i class="fas fa-edit"></i>
                                 Edit
                             </a>
-                            <a href="#" class="text-sm pl-3"
+                            <a th:href="'/backend/blog/delete/' + ${blog.id}" class="text-sm pl-3"
                                onclick="return confirm('确定要删除这篇博客吗？此操作不可恢复！')">
                                 <i class="fas fa-trash"></i>
                                 Remove
