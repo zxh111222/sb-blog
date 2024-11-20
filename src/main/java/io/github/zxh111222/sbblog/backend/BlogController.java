@@ -17,9 +17,15 @@ public class BlogController {
 
 
     @GetMapping()
-    public String list(Model model) {
-        List<Blog> blogs = blogRepository.findAll();
+    public String list(@RequestParam(value = "search", required = false) String search, Model model) {
+        List<Blog> blogs;
+        if (search != null && !search.trim().isEmpty()) {
+            blogs = blogRepository.findByTitleContaining(search.trim());
+        } else {
+            blogs = blogRepository.findAll();
+        }
         model.addAttribute("blogs", blogs);
+        model.addAttribute("search", search);
         return "backend/list";
     }
 
