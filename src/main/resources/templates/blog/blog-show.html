@@ -1,5 +1,5 @@
 <div th:replace="~{ app :: layout ('博客详情', ~{::#css}, ~{::#main}, ~{::#js}) }" xmlns:th="http://www.thymeleaf.org">
-    <link id="css" rel="stylesheet" href="/tocbot/dist/tocbot.css">
+    <link id="css" rel="stylesheet" href="/vendor/tocbot/dist/tocbot.css">
 
     <main id="main" class="my-2rem">
         <article class="blog-show container">
@@ -45,7 +45,7 @@
     </main>
 
     <div id="js">
-        <script type="module" src="/tocbot/dist/tocbot.js"></script>
+        <script type="module" src="/vendor/tocbot/dist/tocbot.js"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 tocbot.init({
