@@ -35,3 +35,4 @@ build/
 ### xxx ###
 node_modules
 package-lock.json
+upload
