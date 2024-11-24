@@ -64,7 +64,7 @@ public class BlogController {
         return "backend/blog/edit";
     }
 
-    @PostMapping("edit")
+    @PostMapping("update")
 //    @ResponseBody
     public String update(Blog updatedBlog) {
         Blog blog = blogRepository.findById(updatedBlog.getId()).orElseThrow(() -> new RuntimeException("博客不存在"));
