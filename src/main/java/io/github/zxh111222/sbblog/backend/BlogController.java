@@ -10,8 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller("BackendBlogController")
 @RequestMapping("backend/blog")
 public class BlogController {
@@ -37,18 +35,18 @@ public class BlogController {
         model.addAttribute("totalPages", blogs.getTotalPages()); // 总页数
         model.addAttribute("totalRecords", blogs.getTotalElements()); //总记录数
         model.addAttribute("search", search);
-        return "backend/list";
+        return "backend/blog/list";
     }
 
     @GetMapping("{id}")
     public String show(@PathVariable Long id) {
         System.out.println("id = " + id);
-        return "backend/show";
+        return "backend/blog/show";
     }
 
     @GetMapping("add")
     public String add() {
-        return "backend/add";
+        return "backend/blog/add";
     }
 
     @PostMapping(value = "add")
@@ -63,7 +61,7 @@ public class BlogController {
     public String edit(@PathVariable Long id, Model model) {
         Blog blog = blogRepository.findById(id).orElseThrow(() -> new RuntimeException("博客不存在"));
         model.addAttribute("blog", blog);
-        return "backend/edit";
+        return "backend/blog/edit";
     }
 
     @PostMapping("edit")
