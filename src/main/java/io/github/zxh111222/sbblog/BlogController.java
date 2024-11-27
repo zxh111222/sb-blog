@@ -1,5 +1,6 @@
 package io.github.zxh111222.sbblog;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -41,10 +42,14 @@ public class BlogController {
     }
 
     @GetMapping("{id}")
-    public String show(@PathVariable String id) {
-        System.out.println("id = " + id);
-        return "blog/blog-show";
+    public String show(@PathVariable Long id, Model model) {
+        Optional<Blog> optionalBlog = blogRepository.findById(id);
+
+        if (optionalBlog.isEmpty()) {
+            throw new EntityNotFoundException();
+        } else {
+            model.addAttribute("blog", optionalBlog.get());
+            return "blog/blog-show";
+        }
     }
-
-
 }
