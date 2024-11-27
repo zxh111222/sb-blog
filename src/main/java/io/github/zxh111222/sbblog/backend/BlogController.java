@@ -63,6 +63,14 @@ public class BlogController {
     @PostMapping(value = "add")
 //    @ResponseBody
     public String save(@RequestParam(value = "coverImage", required = false) MultipartFile file, Blog blog) throws IOException {
+        uploadCover(file, blog);
+
+        blogRepository.save(blog);
+
+        return "redirect:/backend/blog";
+    }
+
+    private void uploadCover(MultipartFile file, Blog blog) throws IOException {
         if (file != null && !file.isEmpty()) {
             File dir = new File(uploadBasePath + File.separator + coverPath);
             if (!dir.exists()) {
@@ -75,10 +83,6 @@ public class BlogController {
             file.transferTo(new File(dir.getAbsolutePath() + File.separator + newFilename));
             blog.setCover("/" + coverPath + File.separator + newFilename);
         }
-
-        blogRepository.save(blog);
-
-        return "redirect:/backend/blog";
     }
 
     @GetMapping("edit/{id}")
@@ -90,10 +94,14 @@ public class BlogController {
 
     @PostMapping("update")
 //    @ResponseBody
-    public String update(Blog updatedBlog) {
+    public String update(@RequestParam(value = "coverImage", required = false) MultipartFile file, Blog updatedBlog) throws IOException {
         Blog blog = blogRepository.findById(updatedBlog.getId()).orElseThrow(() -> new RuntimeException("博客不存在"));
         blog.setTitle(updatedBlog.getTitle());
         blog.setContent(updatedBlog.getContent());
+        System.out.println(file);
+        uploadCover(file, blog);
+        System.out.println(blog);
+
         blogRepository.save(blog);
         return "redirect:/backend/blog";
     }
