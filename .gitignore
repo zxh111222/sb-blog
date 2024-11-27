@@ -36,3 +36,4 @@ build/
 node_modules
 package-lock.json
 upload
+/src/main/resources/static/build
