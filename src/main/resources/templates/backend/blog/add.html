@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<div th:replace="~{ backend/app :: layout ('添加博客', _, ~{::#main}, _) }" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{ backend/app :: layout ('添加博客', _, ~{::#main}, ~{::#js}) }" xmlns:th="http://www.thymeleaf.org">
     <div class="content-wrapper" id="main">
         <!-- Content Header (Page header) -->
         <section class="content-header">
@@ -23,7 +23,8 @@
                     </div>
                     <div class="form-group">
                         <label for="content">博客内容</label>
-                        <textarea id="content" class="form-control" rows="4" name="content"></textarea>
+                        <textarea id="content" class="form-control d-none" rows="4" name="content"></textarea>
+                        <div id="markdown-container" style="height:600px"></div>
                     </div>
                     <div class="form-group">
                         <label for="cover">封面图片</label>
@@ -38,4 +39,11 @@
         </section>
         <!-- /.content -->
     </div>
+
+    <script type="module" id="js">
+        const cherryInstance = new Cherry({
+            id: 'markdown-container',
+            value: '',
+        });
+    </script>
 </div>
