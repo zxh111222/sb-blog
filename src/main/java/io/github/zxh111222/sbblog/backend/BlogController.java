@@ -67,7 +67,7 @@ public class BlogController {
     @PostMapping(value = "add")
 //    @ResponseBody
     public String save(@RequestParam(value = "coverImage", required = false) MultipartFile file, @Valid @ModelAttribute("blog") BlogDTO blog, BindingResult result) throws IOException {
-//        uploadCover(file, blog);
+        uploadCover(file, blog);
 //        blogRepository.save(blog);
         if (result.hasErrors()) {
             return "backend/blog/add";
@@ -76,7 +76,7 @@ public class BlogController {
         return "redirect:/backend/blog";
     }
 
-    private void uploadCover(MultipartFile file, Blog blog) throws IOException {
+    private void uploadCover(MultipartFile file, BlogDTO blog) throws IOException {
         if (file != null && !file.isEmpty()) {
             File dir = new File(uploadBasePath + File.separator + coverPath);
             if (!dir.exists()) {
