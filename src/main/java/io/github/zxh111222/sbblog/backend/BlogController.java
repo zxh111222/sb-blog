@@ -1,6 +1,7 @@
 package io.github.zxh111222.sbblog.backend;
 
 import io.github.zxh111222.sbblog.Blog;
+import io.github.zxh111222.sbblog.BlogDTO;
 import io.github.zxh111222.sbblog.BlogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -62,10 +63,11 @@ public class BlogController {
     String coverPath;
     @PostMapping(value = "add")
 //    @ResponseBody
-    public String save(@RequestParam(value = "coverImage", required = false) MultipartFile file, Blog blog) throws IOException {
-        uploadCover(file, blog);
-
-        blogRepository.save(blog);
+    public String save(@RequestParam(value = "coverImage", required = false) MultipartFile file, BlogDTO blog) throws IOException {
+//        uploadCover(file, blog);
+//
+//        blogRepository.save(blog);
+        System.out.println(blog);
 
         return "redirect:/backend/blog";
     }
