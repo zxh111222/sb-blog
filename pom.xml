@@ -79,10 +79,25 @@
             <artifactId>pytorch-model-zoo</artifactId>
             <version>0.20.0</version>
         </dependency>
+        <!-- PyTorch GPU 依赖 -->
+        <dependency>
+            <groupId>ai.djl.pytorch</groupId>
+            <artifactId>pytorch-native-cu118</artifactId>
+            <classifier>win-x86_64</classifier>
+            <version>2.0.1</version>
+        </dependency>
 
 
 
     </dependencies>
+
+    <!-- 添加 DJL 仓库 -->
+    <repositories>
+        <repository>
+            <id>djl.ai</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
+    </repositories>
 
     <build>
         <plugins>
