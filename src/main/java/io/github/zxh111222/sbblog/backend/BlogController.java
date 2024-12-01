@@ -63,11 +63,14 @@ public class BlogController {
     String coverPath;
     @PostMapping(value = "add")
 //    @ResponseBody
-    public String save(@RequestParam(value = "coverImage", required = false) MultipartFile file, BlogDTO blog) throws IOException {
+    public String save(@RequestParam(value = "coverImage", required = false) MultipartFile file, BlogDTO blog, Model model) throws IOException {
 //        uploadCover(file, blog);
 //
 //        blogRepository.save(blog);
-        System.out.println(blog);
+        if (blog.getTitle().length() < 5) {
+            model.addAttribute("errorTitle", "标题长度不能少于5");
+            return "/backend/blog/add";
+        }
 
         return "redirect:/backend/blog";
     }

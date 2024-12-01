@@ -20,7 +20,8 @@
                 <form method="post" action="/backend/blog/add" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="title">博客标题</label>
-                        <input type="text" id="title" class="form-control" name="title" placeholder="请输入博客标题">
+                        <input type="text" id="title"  th:class="|form-control ${errorTitle != null ? 'is-invalid' : ''}|" name="title" placeholder="请输入博客标题">
+                        <span th:if="${errorTitle != null}" id="error-title" class="error invalid-feedback" th:text="${errorTitle}"></span>
                     </div>
                     <div class="form-group">
                         <label for="content">博客内容</label>
