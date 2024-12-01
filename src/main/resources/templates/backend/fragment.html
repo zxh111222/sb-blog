@@ -17,7 +17,10 @@
         value: document.getElementById('content').value,
         toolbars: {
             // 定义顶部工具栏
-            //toolbar: ['bold','italic','strikethrough','|','color','header','ruby','|','list','panel','detail'],
+            toolbar: ['bold', 'italic', 'strikethrough', '|', 'color', 'header', '|', 'list', 'detail', 'panel',
+                {insert: ['image', 'audio', 'video', 'link', 'hr', 'code', 'table']},
+                'undo', 'search', 'settings'
+            ],
             // 定义侧边栏，默认为空
             sidebar: ['theme'],
             // 定义顶部右侧工具栏，默认为空
