@@ -1,13 +1,15 @@
 <div th:replace="~{ app :: layout ('博客详情', ~{::#css}, ~{::#main}, ~{::#js}) }" xmlns:th="http://www.thymeleaf.org">
-    <link id="css" rel="stylesheet" href="/vendor/tocbot/dist/tocbot.css">
-
+    <div id="css">
+        <link rel="stylesheet" href="/build/assets/backend.css">
+        <link rel="stylesheet" href="/vendor/tocbot/dist/tocbot.css">
+    </div>
     <main id="main" class="my-2rem">
         <article class="blog-show container">
             <div class="row">
                 <div class="col-lg-8">
                     <h1 th:text="${blog.title}">maven 加速，修改镜像源</h1>
                     <p class="meta text-muted mb-2rem"><a href="#">admin</a> - 2024-11-18 08:35:28</p>
-                    <div class="animate__animated animate__fadeInLeft js-toc-content" th:text="${blog.content}">
+                    <div class="animate__animated animate__fadeInLeft js-toc-content" th:data-content="${blog.content}" id="blog-content">
 
                     </div>
                 </div>
@@ -19,6 +21,26 @@
     </main>
 
     <div id="js">
+        <script type="module" src="/build/assets/backend.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const cherry = new Cherry({
+                    id: 'blog-content',
+                    value: document.getElementById('blog-content').dataset.content,
+                    editor: {
+                        defaultModel: 'previewOnly',
+                    },
+                    toolbars: {
+                        // 打开侧边目录
+                        toc: {
+                            updateLocationHash: true,
+                            defaultModel: 'pure',
+                        },
+                    }
+                });
+            });
+        </script>
+
         <script type="module" src="/vendor/tocbot/dist/tocbot.js"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
