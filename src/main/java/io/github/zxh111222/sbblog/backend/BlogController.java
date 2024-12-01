@@ -3,6 +3,7 @@ package io.github.zxh111222.sbblog.backend;
 import io.github.zxh111222.sbblog.Blog;
 import io.github.zxh111222.sbblog.BlogDTO;
 import io.github.zxh111222.sbblog.BlogRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -53,7 +55,8 @@ public class BlogController {
     }
 
     @GetMapping("add")
-    public String add() {
+    public String add(Model model) {
+        model.addAttribute("blog", new Blog());
         return "backend/blog/add";
     }
 
@@ -63,13 +66,11 @@ public class BlogController {
     String coverPath;
     @PostMapping(value = "add")
 //    @ResponseBody
-    public String save(@RequestParam(value = "coverImage", required = false) MultipartFile file, BlogDTO blog, Model model) throws IOException {
+    public String save(@RequestParam(value = "coverImage", required = false) MultipartFile file, @Valid @ModelAttribute("blog") BlogDTO blog, BindingResult result) throws IOException {
 //        uploadCover(file, blog);
-//
 //        blogRepository.save(blog);
-        if (blog.getTitle().length() < 5) {
-            model.addAttribute("errorTitle", "标题长度不能少于5");
-            return "/backend/blog/add";
+        if (result.hasErrors()) {
+            return "backend/blog/add";
         }
 
         return "redirect:/backend/blog";
