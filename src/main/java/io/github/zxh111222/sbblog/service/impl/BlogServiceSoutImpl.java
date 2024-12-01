@@ -7,7 +7,7 @@ import io.github.zxh111222.sbblog.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service
+//@Service
 public class BlogServiceSoutImpl implements BlogService {
 
     @Override
