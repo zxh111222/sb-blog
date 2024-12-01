@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DialectOverride;
 
+import java.time.LocalDateTime;
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,5 +28,10 @@ public class Blog {
 
     @Nullable
     private String description;
+
+    private LocalDateTime created_at;
+
+    @Nullable
+    private LocalDateTime updated_at;
 
 }
