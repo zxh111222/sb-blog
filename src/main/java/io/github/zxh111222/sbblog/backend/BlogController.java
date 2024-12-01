@@ -3,6 +3,7 @@ package io.github.zxh111222.sbblog.backend;
 import io.github.zxh111222.sbblog.Blog;
 import io.github.zxh111222.sbblog.BlogDTO;
 import io.github.zxh111222.sbblog.BlogRepository;
+import io.github.zxh111222.sbblog.service.BlogService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +26,9 @@ import java.util.UUID;
 public class BlogController {
     @Autowired
     BlogRepository blogRepository;
+
+    @Autowired
+    BlogService blogService;
 
 
     @GetMapping()
@@ -68,7 +72,7 @@ public class BlogController {
 //    @ResponseBody
     public String save(@RequestParam(value = "coverImage", required = false) MultipartFile file, @Valid @ModelAttribute("blog") BlogDTO blog, BindingResult result) throws IOException {
         uploadCover(file, blog);
-//        blogRepository.save(blog);
+        blogService.save(blog);
         if (result.hasErrors()) {
             return "backend/blog/add";
         }
@@ -101,11 +105,8 @@ public class BlogController {
     @PostMapping("update")
 //    @ResponseBody
     public String update(@RequestParam(value = "coverImage", required = false) MultipartFile file, @Valid @ModelAttribute("blog") BlogDTO blog, BindingResult result) throws IOException {
-//        Blog blog = blogRepository.findById(updatedBlog.getId()).orElseThrow(() -> new RuntimeException("博客不存在"));
-//        blog.setTitle(updatedBlog.getTitle());
-//        blog.setContent(updatedBlog.getContent());
-//        uploadCover(file, blog);
-//        blogRepository.save(blog);
+        uploadCover(file, blog);
+        blogService.save(blog);
 
         if (result.hasErrors()) {
             return "backend/blog/edit";
