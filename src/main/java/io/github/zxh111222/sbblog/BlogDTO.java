@@ -17,11 +17,11 @@ public class BlogDTO {
     String title;
 
     @NotEmpty
-    @Size(min = 50)
+    @Size(min = 25)
     String content;
 
     String cover;
-    @NotEmpty
+
     @Size(max = 100)
     String description;
 }

@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
-@Service
+//@Service
 public class BlogServiceImpl implements BlogService {
-    @Autowired
+//    @Autowired
     BlogRepository blogRepository;
 
     @Override
