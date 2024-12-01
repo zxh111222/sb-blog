@@ -59,6 +59,20 @@
         <script type="module" src="/vendor/tocbot/dist/tocbot.js"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
+                // 获取具有特定类名的元素
+                const cherry_color_text = document.getElementsByClassName('cherry-color-text');
+                const cherry_color_bg = document.getElementsByClassName('cherry-color-bg');
+
+                // 由于 getElementsByClassName 返回的是类数组对象，转换为数组后操作
+                Array.from(cherry_color_text).forEach(element => {
+                    const h3Elements = element.querySelectorAll('h3'); // 获取 h3 元素
+                    h3Elements.forEach(h3 => h3.remove()); // 删除 h3 元素
+                });
+
+                Array.from(cherry_color_bg).forEach(element => {
+                    const h3Elements = element.querySelectorAll('h3'); // 获取 h3 元素
+                    h3Elements.forEach(h3 => h3.remove()); // 删除 h3 元素
+                });
                 tocbot.init({
                     tocSelector: '.js-toc',
                     contentSelector: '.js-toc-content',
