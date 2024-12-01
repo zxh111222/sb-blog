@@ -6,7 +6,7 @@ import java.io.OutputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-public class Summarization {
+public class SummarizationTest {
 
     public static String summarize(String text) throws Exception {
         String apiUrl = "http://127.0.0.1:5000/summarize";  // Flask服务地址
