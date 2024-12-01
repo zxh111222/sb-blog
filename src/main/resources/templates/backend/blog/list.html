@@ -50,7 +50,7 @@
                     <tbody th:each="blog: ${blogs}">
                     <tr>
                         <td th:text="${blog.id}">blog.id</td>
-                        <td><a href="#" target="_blank" th:text="${blog.title}">blog.title</a>
+                        <td><a th:href="@{'/blog/' + ${blog.id}}" target="_blank" th:text="${blog.title}">blog.title</a>
                         </td>
                         <td><span class="tag tag-success">blog.type</span></td>
                         <td style="display: flex;">
