@@ -16,27 +16,9 @@
         <section class="content">
             <!-- card-body -->
             <div class="card-body">
-                <form method="post" action="/backend/blog/update" enctype="multipart/form-data">
+                <form method="post" action="/backend/blog/update" enctype="multipart/form-data" th:object="${blog}">
                     <input type="hidden" name="id" th:value="${blog.id}">
-                    <div class="form-group">
-                        <label for="title">博客标题</label>
-                        <input type="text" id="title" class="form-control" name="title" th:value="${blog.title}" placeholder="请输入博客标题">
-                    </div>
-                    <div class="form-group">
-                        <label for="content">博客内容</label>
-                        <textarea id="content" class="form-control d-none" rows="4" name="content" th:text="${blog.content}"></textarea>
-                        <div id="markdown-container" style="height:600px"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="cover">封面图片</label>
-                        <div class="mb-2" th:if="${!#strings.isEmpty(blog.cover)}">
-                            <img th:src="${blog.cover}" alt="当前封面图" style="max-width: 200px; max-height: 200px;">
-                        </div>
-                        <div>
-                            <input type="file" name="coverImage" id="cover" class="d-block">
-                            <input type="hidden" name="cover" th:value="${blog.cover}">
-                        </div>
-                    </div>
+                    <div th:replace="~{backend/fragment :: #blog-form-items}"></div>
                     <button type="submit" class="btn btn-primary">修改</button>
                 </form>
             </div>

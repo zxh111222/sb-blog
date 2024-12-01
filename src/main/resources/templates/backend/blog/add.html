@@ -12,10 +12,17 @@
                 </div>
             </div><!-- /.container-fluid -->
         </section>
-        <div th:replace="~{backend/fragment :: #blog-form-items}"></div>
+
         <!-- Main content -->
         <section class="content">
-
+            <!-- card-body -->
+            <div class="card-body">
+                <form method="post" action="/backend/blog/add" enctype="multipart/form-data" th:object="${blog}">
+                    <div th:replace="~{backend/fragment :: #blog-form-items}"></div>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </form>
+            </div>
+            <!-- /.card-body -->
         </section>
         <!-- /.content -->
     </div>

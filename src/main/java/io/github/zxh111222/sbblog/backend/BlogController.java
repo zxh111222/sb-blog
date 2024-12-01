@@ -100,15 +100,16 @@ public class BlogController {
 
     @PostMapping("update")
 //    @ResponseBody
-    public String update(@RequestParam(value = "coverImage", required = false) MultipartFile file, Blog updatedBlog) throws IOException {
-        Blog blog = blogRepository.findById(updatedBlog.getId()).orElseThrow(() -> new RuntimeException("博客不存在"));
-        blog.setTitle(updatedBlog.getTitle());
-        blog.setContent(updatedBlog.getContent());
-        System.out.println(file);
-        uploadCover(file, blog);
-        System.out.println(blog);
+    public String update(@RequestParam(value = "coverImage", required = false) MultipartFile file, @Valid @ModelAttribute("blog") BlogDTO blog, BindingResult result) throws IOException {
+//        Blog blog = blogRepository.findById(updatedBlog.getId()).orElseThrow(() -> new RuntimeException("博客不存在"));
+//        blog.setTitle(updatedBlog.getTitle());
+//        blog.setContent(updatedBlog.getContent());
+//        uploadCover(file, blog);
+//        blogRepository.save(blog);
 
-        blogRepository.save(blog);
+        if (result.hasErrors()) {
+            return "backend/blog/edit";
+        }
         return "redirect:/backend/blog";
     }
 
