@@ -17,7 +17,6 @@
             <!-- card-body -->
             <div class="card-body">
                 <form method="post" action="/backend/blog/update" enctype="multipart/form-data" th:object="${blog}">
-                    <input type="hidden" name="id" th:value="${blog.id}">
                     <div th:replace="~{backend/fragment :: #blog-form-items}"></div>
                     <button type="submit" class="btn btn-primary">修改</button>
                 </form>

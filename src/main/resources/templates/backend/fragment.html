@@ -13,6 +13,7 @@
 </style>
 
 <div id="blog-form-items">
+    <input type="hidden" name="id" th:value="${blog.id}">
     <div class="form-group">
         <label for="title">博客标题</label>
         <input th:field="*{title}" type="text" class="form-control" th:class="|form-control ${#fields.hasErrors('title') ? 'is-invalid' : ''}|" id="title" name="title" placeholder="请输入博客标题">
