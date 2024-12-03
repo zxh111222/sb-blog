@@ -1,4 +1,4 @@
-package io.github.zxh111222.sbblog.utils;
+package io.github.zxh111222.sbblog.summarization.utils;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
