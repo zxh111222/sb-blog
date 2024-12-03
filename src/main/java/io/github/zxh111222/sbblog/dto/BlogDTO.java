@@ -1,4 +1,4 @@
-package io.github.zxh111222.sbblog;
+package io.github.zxh111222.sbblog.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;

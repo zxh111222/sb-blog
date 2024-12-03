@@ -1,8 +1,8 @@
 package io.github.zxh111222.sbblog.service.impl;
 
-import io.github.zxh111222.sbblog.Blog;
-import io.github.zxh111222.sbblog.BlogDTO;
-import io.github.zxh111222.sbblog.BlogRepository;
+import io.github.zxh111222.sbblog.entity.Blog;
+import io.github.zxh111222.sbblog.dto.BlogDTO;
+import io.github.zxh111222.sbblog.dao.BlogRepository;
 import io.github.zxh111222.sbblog.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

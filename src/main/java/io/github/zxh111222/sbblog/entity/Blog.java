@@ -1,10 +1,9 @@
-package io.github.zxh111222.sbblog;
+package io.github.zxh111222.sbblog.entity;
 
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.DialectOverride;
 
 import java.time.LocalDateTime;
 

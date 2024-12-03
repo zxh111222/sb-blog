@@ -1,13 +1,10 @@
 package io.github.zxh111222.sbblog.service.impl;
 
-import io.github.zxh111222.sbblog.Blog;
-import io.github.zxh111222.sbblog.BlogDTO;
-import io.github.zxh111222.sbblog.BlogRepository;
+import io.github.zxh111222.sbblog.entity.Blog;
+import io.github.zxh111222.sbblog.dto.BlogDTO;
 import io.github.zxh111222.sbblog.service.BlogService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
