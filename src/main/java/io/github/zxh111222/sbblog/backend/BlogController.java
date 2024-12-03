@@ -2,7 +2,6 @@ package io.github.zxh111222.sbblog.backend;
 
 import io.github.zxh111222.sbblog.Blog;
 import io.github.zxh111222.sbblog.BlogDTO;
-import io.github.zxh111222.sbblog.BlogRepository;
 import io.github.zxh111222.sbblog.service.BlogService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +24,7 @@ import java.util.UUID;
 @RequestMapping("backend/blog")
 public class BlogController {
     @Autowired
-    BlogRepository blogRepository;
-
-    @Autowired
     BlogService blogService;
-
 
     @GetMapping()
     public String list(
@@ -40,9 +35,9 @@ public class BlogController {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
         Page<Blog> blogs;
         if (search != null && !search.trim().isEmpty()) {
-            blogs = blogRepository.findByTitleContaining(search.trim(), pageable);
+            blogs = blogService.findByTitleContaining(search.trim(), pageable);
         } else {
-            blogs = blogRepository.findAll(pageable);
+            blogs = blogService.findAll(pageable);
         }
         model.addAttribute("blogs", blogs.getContent());
         model.addAttribute("currentPage", page); // 当前页码
@@ -71,11 +66,12 @@ public class BlogController {
     @PostMapping(value = "add")
 //    @ResponseBody
     public String save(@RequestParam(value = "coverImage", required = false) MultipartFile file, @Valid @ModelAttribute("blog") BlogDTO blog, BindingResult result) throws IOException {
-        uploadCover(file, blog);
-        blogService.save(blog);
         if (result.hasErrors()) {
             return "backend/blog/add";
         }
+
+        uploadCover(file, blog);
+        blogService.save(blog);
 
         return "redirect:/backend/blog";
     }
@@ -97,7 +93,7 @@ public class BlogController {
 
     @GetMapping("edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
-        Blog blog = blogRepository.findById(id).orElseThrow(() -> new RuntimeException("博客不存在"));
+        Blog blog = blogService.findById(id).orElseThrow(() -> new RuntimeException("博客不存在"));
         model.addAttribute("blog", blog);
         return "backend/blog/edit";
     }
@@ -105,18 +101,19 @@ public class BlogController {
     @PostMapping("update")
 //    @ResponseBody
     public String update(@RequestParam(value = "coverImage", required = false) MultipartFile file, @Valid @ModelAttribute("blog") BlogDTO blog, BindingResult result) throws IOException {
-        uploadCover(file, blog);
-        blogService.save(blog);
-
         if (result.hasErrors()) {
             return "backend/blog/edit";
         }
+
+        uploadCover(file, blog);
+        blogService.save(blog);
+
         return "redirect:/backend/blog";
     }
 
     @GetMapping("delete/{id}")
     public String delete(@PathVariable Long id) {
-        blogRepository.deleteById(id);
+        blogService.deleteById(id);
         return "redirect:/backend/blog";
     }
 }
