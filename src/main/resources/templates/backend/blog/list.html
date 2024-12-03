@@ -44,6 +44,7 @@
                         <th>ID</th>
                         <th>博客标题</th>
                         <th>博客类型</th>
+                        <th>创建时间</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -53,6 +54,7 @@
                         <td><a th:href="@{'/blog/' + ${blog.id}}" target="_blank" th:text="${blog.title}">blog.title</a>
                         </td>
                         <td><span class="tag tag-success">blog.type</span></td>
+                        <td><span th:text="${#temporals.format(blog.created_at, 'yyyy-MM-dd HH:mm:ss')}"></span></td>
                         <td style="display: flex;">
                             <a th:href="@{'/backend/blog/edit/' + ${blog.id}}" class="text-sm">
                                 <i class="fas fa-edit"></i>
