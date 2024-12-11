@@ -44,6 +44,7 @@ public class BlogController {
         model.addAttribute("totalPages", blogs.getTotalPages()); // 总页数
         model.addAttribute("totalRecords", blogs.getTotalElements()); //总记录数
         model.addAttribute("search", search);
+        model.addAttribute("requestURI", "/backend/blog");
         return "backend/blog/list";
     }
 
