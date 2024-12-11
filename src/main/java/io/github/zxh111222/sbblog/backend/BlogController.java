@@ -3,6 +3,7 @@ package io.github.zxh111222.sbblog.backend;
 import io.github.zxh111222.sbblog.entity.Blog;
 import io.github.zxh111222.sbblog.dto.BlogDTO;
 import io.github.zxh111222.sbblog.service.BlogService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +32,8 @@ public class BlogController {
             @RequestParam(value = "search", required = false) String search,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "5") int size,
-            Model model) {
+            Model model,
+            HttpServletRequest request) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
         Page<Blog> blogs;
         if (search != null && !search.trim().isEmpty()) {
@@ -44,7 +46,9 @@ public class BlogController {
         model.addAttribute("totalPages", blogs.getTotalPages()); // 总页数
         model.addAttribute("totalRecords", blogs.getTotalElements()); //总记录数
         model.addAttribute("search", search);
-        model.addAttribute("requestURI", "/backend/blog");
+
+        model.addAttribute("requestURI", request.getRequestURI());
+
         return "backend/blog/list";
     }
 
