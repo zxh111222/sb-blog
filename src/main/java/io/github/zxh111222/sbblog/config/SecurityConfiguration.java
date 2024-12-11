@@ -21,6 +21,8 @@ public class SecurityConfiguration {
                         form -> form
                                 .loginPage("/login")
                                 .defaultSuccessUrl("/", true)
+                                .usernameParameter("username")
+                                .passwordParameter("password")
                 )
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers( "/login", "/assets/**", "/build/**", "/img/**", "/vendor/**").permitAll()
