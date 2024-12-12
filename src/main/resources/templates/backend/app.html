@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/vendor/adminlte-3.2.0/dist/css/adminlte.min.css">
     <!-- 通用 CSS -->
     <link rel="stylesheet" href="/build/assets/backend.css">
+    <link rel="stylesheet" href="/vendor/adminlte-3.2.0/plugins/bootstrap/css/bootstrap.min.css">
     <!-- 额外的 CSS -->
     <th:block th:replace="${css}" />
 </head>
@@ -36,13 +37,15 @@
 
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
+
             <li class="nav-item">
                 <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
                     <i class="fas fa-th-large"></i>
                 </a>
             </li>
+
             <li class="nav-item dropdown user-menu">
-                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="/vendor/adminlte-3.2.0/dist/img/user3-128x128.jpg" class="user-image img-circle" alt="User Image">
                     <span sec:authentication="name" class="d-none d-md-inline">xx_name</span>
                 </a>
@@ -124,17 +127,11 @@
 </div>
 <!-- ./wrapper -->
 
-<style>
-    .cherry.fullscreen {
-        z-index: 1050 !important;
-    }
-</style>
-
-
 <!-- jQuery -->
 <script src="/vendor/adminlte-3.2.0/plugins/jquery/jquery.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/vendor/adminlte-3.2.0/dist/js/adminlte.min.js"></script>
+<script src="/vendor/adminlte-3.2.0/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="/vendor/adminlte-3.2.0/dist/js/demo.js"></script>
 <!-- 通用 JS -->
