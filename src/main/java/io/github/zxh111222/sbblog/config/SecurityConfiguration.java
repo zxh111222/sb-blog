@@ -17,6 +17,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(csrf -> csrf.disable()) // 禁用 CSRF
                 .formLogin(
                         form -> form
                                 .loginPage("/login")
@@ -48,7 +49,7 @@ public class SecurityConfiguration {
 
         UserDetails admin = User
                 .withUsername("admin")
-                .password(passwordEncoder().encode("password"))
+                .password(passwordEncoder().encode("123456"))
                 .roles("admin", "user")
                 .build();
 
