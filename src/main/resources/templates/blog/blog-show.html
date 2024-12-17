@@ -147,13 +147,30 @@
             async function translateText(text) {
                 try {
                     const response = await fetch(`/ai/translate-chinese?input=${text}`, {
-                        method: 'GET', // 使用 GET 方法
+                        method: 'GET',
                     });
                     const result = await response.json();
                     return result.translatedText || '翻译失败';
                 } catch (error) {
                     console.error('Translation error:', error);
                     return '翻译出错';
+                }
+            }
+
+            // 图片翻译 API 调用
+            async function translateImage(url) {
+                try {
+                    const response = await fetch(`/ai/translate_img`, {
+                        method: 'Post',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ "input": url })
+                    });
+                    const result = await response.json();
+                } catch (error) {
+                    console.error('Translation error:', error);
+                    return '图片翻译出错';
                 }
             }
 

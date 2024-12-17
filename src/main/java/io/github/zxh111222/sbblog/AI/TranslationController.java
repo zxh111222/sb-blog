@@ -1,20 +1,27 @@
 package io.github.zxh111222.sbblog.AI;
 
 
+import com.alibaba.dashscope.aigc.multimodalconversation.MultiModalConversation;
+import com.alibaba.dashscope.aigc.multimodalconversation.MultiModalConversationParam;
+import com.alibaba.dashscope.aigc.multimodalconversation.MultiModalConversationResult;
+import com.alibaba.dashscope.common.MultiModalMessage;
+import com.alibaba.dashscope.common.Role;
+import com.alibaba.dashscope.exception.NoApiKeyException;
+import com.alibaba.dashscope.exception.UploadFileException;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -37,6 +44,46 @@ public class TranslationController {
                 chatClient.prompt(prompt)
                         .call().content()
         );
+    }
+
+    @PostMapping("/translate_img")
+    public Map<String, String> translateImg(@RequestBody Map<String, String> input) throws NoApiKeyException, UploadFileException {
+        String imageUrl = input.get("input");
+        String image = loadImage(imageUrl);
+
+        MultiModalConversation conv = new MultiModalConversation();
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("image", image);
+        map.put("max_pixels", "1003520");
+        map.put("min_pixels", "3136");
+        MultiModalMessage userMessage = MultiModalMessage.builder().role(Role.USER.getValue())
+                .content(Arrays.asList(
+                        map,
+                        Collections.singletonMap("text", "翻译图片中的中文为英文，并输出翻译后的图片"))).build();
+        MultiModalConversationParam param = MultiModalConversationParam.builder()
+                .apiKey("sk-bb1ab19daf794061826870031fe6276d")
+                .model("qwen-vl-ocr")
+                .message(userMessage)
+                .topP(0.01)
+                .temperature(0.1f)
+                .maxLength(2000)
+                .build();
+        MultiModalConversationResult result = conv.call(param);
+        System.out.println(result);
+        String chinese_text = (String) result.getOutput().getChoices().get(0).getMessage().getContent().get(0).get("text");
+
+        return Map.of("result",result.toString());
+
+    }
+
+    private String loadImage(String url){
+        String baseLocalPath = "E:/JAVAP/sb-blog/upload";
+        // 提取 URL 路径部分
+        String relativePath = url.replace("http://localhost:8080/", "");
+        // 拼接本地根目录和相对路径
+//        return "file://" + baseLocalPath + File.separator + relativePath.replace("/", File.separator);
+        return baseLocalPath + "/" + relativePath;
     }
 
 }
