@@ -1,4 +1,4 @@
-package io.github.zxh111222.sbblog;
+package io.github.zxh111222.sbblog.AI;
 
 
 import org.springframework.ai.chat.client.ChatClient;
