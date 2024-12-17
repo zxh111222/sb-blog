@@ -68,40 +68,81 @@
 
             function enhanceMarkdownWithTranslation() {
                 const blogContent = document.getElementById('blog-content');
-                const markdownBlocks = blogContent.querySelectorAll('.cherry-markdown h2,.cherry-markdown p, .cherry-markdown .cherry-code-expand');
+                const markdownBlocks = blogContent.querySelectorAll('.cherry-markdown h2, .cherry-markdown p, .cherry-markdown .cherry-code-expand');
 
                 markdownBlocks.forEach((block, index) => {
                     const translateButton = document.createElement('button');
                     translateButton.textContent = '自动翻译';
                     translateButton.style.margin = '10px';
-                    translateButton.style.display = 'block';
+                    translateButton.style.display = 'inline-block'; // 设置为 inline-block，使按钮可以并排显示
                     translateButton.classList.add('translate-btn');
                     translateButton.classList.add('btn');
                     translateButton.classList.add('btn-link');
                     translateButton.dataset.blockId = `block-${index}`;
 
-                    const markdownImg = block.querySelector('img')
+                    const markdownImg = block.querySelector('img');
 
                     translateButton.addEventListener('click', async () => {
+                        let translationContainer;
+
                         if (markdownImg) {
                             // 图片翻译
                             const newImageUrl = await translateImage(markdownImg.src);
-                            markdownImg.src = newImageUrl; // 替换图片为翻译后的版本
+                            markdownImg.src = newImageUrl;
                         } else {
                             // 翻译普通文本
                             const translatedText = await translateText(block.textContent);
-                            const translationContainer = document.createElement('div');
+                            translationContainer = document.createElement('div');
                             translationContainer.classList.add('translation-block');
                             translationContainer.textContent = translatedText;
                             block.parentElement.insertBefore(translationContainer, block.nextSibling);
                         }
+
+                        // 禁用按钮，防止重复点击
+                        translateButton.disabled = true;
+                        translateButton.textContent = '翻译完成';
+
+                        // 创建取消翻译按钮
+                        const cancelButton = document.createElement('button');
+                        cancelButton.textContent = '取消翻译';
+                        cancelButton.style.margin = '10px';
+                        cancelButton.style.display = 'inline-block';
+                        cancelButton.classList.add('cancel-btn');
+                        cancelButton.classList.add('btn');
+                        cancelButton.classList.add('btn-link');
+
+                        // 将取消按钮插入到自动翻译按钮旁边
+                        const buttonContainer = document.createElement('div');
+                        buttonContainer.style.display = 'inline-block'; // 保证按钮并排显示
+                        buttonContainer.appendChild(translateButton);
+                        buttonContainer.appendChild(cancelButton);
+
+                        // 将按钮容器插入到当前元素中
+                        block.parentElement.insertBefore(buttonContainer, block.nextSibling.nextSibling);
+
+                        // 保存当前翻译区域到block中，确保是当前块的翻译
+                        block.translationContainer = translationContainer;
+
+                        // 取消翻译按钮点击事件
+                        cancelButton.addEventListener('click', () => {
+                            // 只移除当前块的翻译区域
+                            if (block.translationContainer) {
+                                block.translationContainer.remove(); // 移除翻译区域
+                                translateButton.disabled = false; // 恢复翻译按钮
+                                translateButton.textContent = '自动翻译'; // 恢复按钮文字
+                                cancelButton.remove(); // 移除取消按钮
+                                buttonContainer.remove(); // 移除按钮容器
+                                block.translationContainer = null; // 清空保存的翻译区域
+                            }
+                            // 将按钮插入到元素的后面
+                            block.parentElement.insertBefore(translateButton, block.nextSibling);
+                        });
                     });
 
                     // 将按钮插入到元素的后面
                     block.parentElement.insertBefore(translateButton, block.nextSibling);
                 });
             }
-
             // 翻译 API 调用
             async function translateText(text) {
                 try {
