@@ -87,8 +87,13 @@
 
                         if (markdownImg) {
                             // 图片翻译
-                            const newImageUrl = await translateImage(markdownImg.src);
-                            markdownImg.src = newImageUrl;
+                            // const newImageUrl = await translateImage(markdownImg.src);
+                            // markdownImg.src = newImageUrl;
+                            const translatedText = await translateImage(markdownImg.src);
+                            translationContainer = document.createElement('div');
+                            translationContainer.classList.add('translation-block');
+                            translationContainer.textContent = translatedText;
+                            block.parentElement.insertBefore(translationContainer, block.nextSibling);
                         } else if (block.className === 'cherry-code-expand') {
                             // 翻译代码注释
                             const translatedCode = await translateCodeComments(block.textContent);
@@ -180,6 +185,7 @@
                         body: JSON.stringify({ "input": url })
                     });
                     const result = await response.json();
+                    return result.translatedText || '翻译失败';
                 } catch (error) {
                     console.error('Translation error:', error);
                     return '图片翻译出错';
@@ -189,7 +195,7 @@
             // 翻译代码注释 API 调用
             async function translateCodeComments(code) {
                 try {
-                    const response = await fetch('/api/translate-code-comments', {
+                    const response = await fetch('/ai/translate-code-comments', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ 'code': code }),
