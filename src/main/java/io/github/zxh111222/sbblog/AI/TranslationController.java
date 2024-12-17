@@ -22,6 +22,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @RestController
@@ -85,5 +87,35 @@ public class TranslationController {
 //        return "file://" + baseLocalPath + File.separator + relativePath.replace("/", File.separator);
         return baseLocalPath + "/" + relativePath;
     }
+
+    @RestController
+    @RequestMapping("/api")
+    public class CodeTranslationController {
+
+        @PostMapping("/translate-code-comments")
+        public Map<String, String> translateCodeComments(@RequestBody Map<String, String> request) {
+            String code = request.get("code");
+
+
+            // 提取注释
+            String commentRegex = "//[^\n]*|/\\*[\\s\\S]*?\\*/";
+            Pattern pattern = Pattern.compile(commentRegex);
+            Matcher matcher = pattern.matcher(code);
+
+            StringBuilder translatedCode = new StringBuilder();
+
+            while (matcher.find()) {
+                String comment = matcher.group();
+                Prompt prompt = new Prompt("将以下这段中文文本翻译为英文(只管翻译，不需任何交流，不需要其他多余语言):" + comment);
+                String translatedComment = chatClient.prompt(prompt)
+                        .call().content();
+                matcher.appendReplacement(translatedCode, translatedComment);
+            }
+            matcher.appendTail(translatedCode);
+
+            return Map.of("translatedCode", translatedCode.toString());
+        }
+    }
+
 
 }

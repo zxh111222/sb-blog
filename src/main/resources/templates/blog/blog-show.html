@@ -89,6 +89,17 @@
                             // 图片翻译
                             const newImageUrl = await translateImage(markdownImg.src);
                             markdownImg.src = newImageUrl;
+                        } else if (block.className === 'cherry-code-expand') {
+                            // 翻译代码注释
+                            const translatedCode = await translateCodeComments(block.textContent);
+
+                            const formattedCode = `${translatedCode}\n`;
+
+                            translationContainer = document.createElement('pre');
+                            translationContainer.classList.add('translation-block');
+                            translationContainer.classList.add('language-java');
+                            translationContainer.textContent = formattedCode;
+                            block.parentElement.insertBefore(translationContainer, block.nextSibling);
                         } else {
                             // 翻译普通文本
                             const translatedText = await translateText(block.textContent);
@@ -143,6 +154,7 @@
                     block.parentElement.insertBefore(translateButton, block.nextSibling);
                 });
             }
+
             // 翻译 API 调用
             async function translateText(text) {
                 try {
@@ -171,6 +183,22 @@
                 } catch (error) {
                     console.error('Translation error:', error);
                     return '图片翻译出错';
+                }
+            }
+
+            // 翻译代码注释 API 调用
+            async function translateCodeComments(code) {
+                try {
+                    const response = await fetch('/api/translate-code-comments', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 'code': code }),
+                    });
+                    const result = await response.json();
+                    return result.translatedCode || code;
+                } catch (error) {
+                    console.error('Code comment translation error:', error);
+                    return code;
                 }
             }
 
