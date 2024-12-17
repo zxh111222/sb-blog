@@ -59,33 +59,66 @@
                 });
             });
         </script>
-
-       <!-- <script type="module" src="/vendor/tocbot/dist/tocbot.js"></script>
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                // 获取具有特定类名的元素
-                const cherry_color_text = document.getElementsByClassName('cherry-color-text');
-                const cherry_color_bg = document.getElementsByClassName('cherry-color-bg');
 
-                // 由于 getElementsByClassName 返回的是类数组对象，转换为数组后操作
-                Array.from(cherry_color_text).forEach(element => {
-                    const h3Elements = element.querySelectorAll('h3'); // 获取 h3 元素
-                    h3Elements.forEach(h3 => h3.remove()); // 删除 h3 元素
-                });
-
-                Array.from(cherry_color_bg).forEach(element => {
-                    const h3Elements = element.querySelectorAll('h3'); // 获取 h3 元素
-                    h3Elements.forEach(h3 => h3.remove()); // 删除 h3 元素
-                });
-                tocbot.init({
-                    tocSelector: '.js-toc',
-                    contentSelector: '.js-toc-content',
-                    headingSelector: 'h1, h2, h3, h4, h5, h6',
-                    hasInnerContainers: true,
-                    collapseDepth: 6,
-                });
+            // 确保在 DOM 加载完成后执行
+            document.addEventListener('DOMContentLoaded', function() {
+                enhanceMarkdownWithTranslation();
             });
-        </script>-->
+
+            function enhanceMarkdownWithTranslation() {
+                const blogContent = document.getElementById('blog-content');
+                const markdownBlocks = blogContent.querySelectorAll('.cherry-markdown h2,.cherry-markdown p, .cherry-markdown .cherry-code-expand');
+
+                markdownBlocks.forEach((block, index) => {
+                    const translateButton = document.createElement('button');
+                    translateButton.textContent = '自动翻译';
+                    translateButton.style.margin = '10px';
+                    translateButton.style.display = 'block';
+                    translateButton.classList.add('translate-btn');
+                    translateButton.classList.add('btn');
+                    translateButton.classList.add('btn-link');
+                    translateButton.dataset.blockId = `block-${index}`;
+
+                    const markdownImg = block.querySelector('img')
+
+                    translateButton.addEventListener('click', async () => {
+                        if (markdownImg) {
+                            // 图片翻译
+                            const newImageUrl = await translateImage(markdownImg.src);
+                            markdownImg.src = newImageUrl; // 替换图片为翻译后的版本
+                        } else {
+                            // 翻译普通文本
+                            const translatedText = await translateText(block.textContent);
+                            const translationContainer = document.createElement('div');
+                            translationContainer.classList.add('translation-block');
+                            translationContainer.textContent = translatedText;
+                            block.parentElement.insertBefore(translationContainer, block.nextSibling);
+                        }
+                    });
+
+                    // 将按钮插入到元素的后面
+                    block.parentElement.insertBefore(translateButton, block.nextSibling);
+                });
+            }
+
+            // 翻译 API 调用
+            async function translateText(text) {
+                try {
+                    const response = await fetch(`/ai/translate-chinese?input=${text}`, {
+                        method: 'GET', // 使用 GET 方法
+                    });
+                    const result = await response.json();
+                    return result.translatedText || '翻译失败';
+                } catch (error) {
+                    console.error('Translation error:', error);
+                    return '翻译出错';
+                }
+            }
+
+        </script>
+
+
     </div>
 
 
