@@ -1,0 +1,213 @@
+<div th:replace="~{ app :: layout ('博客详情', ~{::#css}, ~{::#main}, ~{::#js}) }" xmlns:th="http://www.thymeleaf.org">
+    <div id="css">
+        <link rel="stylesheet" href="/build/assets/backend.css">
+        <link rel="stylesheet" href="/vendor/tocbot/dist/tocbot.css">
+        <style>
+            .cherry {
+                height: unset;
+                /*box-shadow: none;*/
+            }
+            .cherry-markdown a.anchor:before {
+                content: "";
+            }
+            .cherry-markdown img {
+                max-width: 100% !important;
+            }
+            .cherry-markdown video {
+                max-width: 100% !important;
+            }
+        </style>
+    </div>
+    <main id="main" class="my-2rem">
+        <article class="blog-show container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h1 th:text="${blog.title}">maven 加速，修改镜像源</h1>
+                    <p class="meta text-muted mb-2rem"><a href="#">admin</a> - <i th:text="${#temporals.format(blog.created_at, 'yyyy-MM-dd HH:mm:ss')}"></i></p>
+                    <div th:data-content="${blog.content}" id="blog-content">
+
+                    </div>
+                </div>
+                <div class="col-lg-3 offset-lg-1">
+                    <div id="outline" class="js-toc toc sticky-top d-none d-lg-block animate__animated animate__fadeInRight animate__delay-1s"></div>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <div id="js">
+        <script type="module" src="/build/assets/backend.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const cherry = new Cherry({
+                    id: 'blog-content',
+                    value: document.getElementById('blog-content').dataset.content,
+                    editor: {
+                        defaultModel: 'previewOnly',
+                    },
+                    previewer: {
+                        enablePreviewerBubble: false,
+                    },
+                    toolbars: {
+                        // 打开侧边目录
+                        toc: {
+                            updateLocationHash: true,
+                            defaultModel: 'pure',
+                            position: 'fixed',
+                        },
+                    }
+                });
+            });
+        </script>
+        <script>
+
+            // 确保在 DOM 加载完成后执行
+            document.addEventListener('DOMContentLoaded', function() {
+                enhanceMarkdownWithTranslation();
+            });
+
+            function enhanceMarkdownWithTranslation() {
+                const blogContent = document.getElementById('blog-content');
+                const markdownBlocks = blogContent.querySelectorAll('.cherry-markdown h2, .cherry-markdown p, .cherry-markdown .cherry-code-expand');
+
+                markdownBlocks.forEach((block, index) => {
+                    const translateButton = document.createElement('button');
+                    translateButton.textContent = '自动翻译';
+                    translateButton.style.margin = '10px';
+                    translateButton.style.display = 'inline-block';
+                    translateButton.classList.add('translate-btn', 'btn', 'btn-link');
+                    translateButton.dataset.blockId = `block-${index}`;
+
+                    const markdownImg = block.querySelector('img');
+
+                    translateButton.addEventListener('click', async () => {
+                        let translationContainer;
+                        if (markdownImg) {
+                            // 图片翻译
+                            // const newImageUrl = await translateImage(markdownImg.src);
+                            // markdownImg.src = newImageUrl;
+                            const translatedText = await translateImage(markdownImg.src);
+                            translationContainer = document.createElement('div');
+                            translationContainer.classList.add('translation-block');
+                            translationContainer.textContent = translatedText;
+                            block.parentElement.insertBefore(translationContainer, block.nextSibling);
+
+                        } else if (block.className === 'cherry-code-expand') {
+                            // 翻译代码注释
+                            const translatedCode = await translateCodeComments(block.textContent);
+
+                            const formattedCode = `${translatedCode}\n`;
+
+                            translationContainer = document.createElement('pre');
+                            translationContainer.classList.add('translation-block');
+                            translationContainer.textContent = formattedCode;
+                            block.parentElement.insertBefore(translationContainer, block.nextSibling);
+                        } else {
+                            // 翻译文本
+                            const translatedText = await translateText(block.textContent);
+                            translationContainer = document.createElement('div');
+                            translationContainer.classList.add('translation-block');
+                            translationContainer.textContent = translatedText;
+                            block.parentElement.insertBefore(translationContainer, block.nextSibling);
+                        }
+
+                        // 防止重复点击
+                        translateButton.disabled = true;
+                        translateButton.textContent = '翻译完成';
+
+                        // 取消翻译按钮
+                        const cancelButton = document.createElement('button');
+                        cancelButton.textContent = '取消翻译';
+                        cancelButton.style.margin = '10px';
+                        cancelButton.style.display = 'inline-block';
+                        translateButton.classList.add('cancel-btn', 'btn', 'btn-link');
+
+
+                        // 取消按钮插入
+                        const buttonContainer = document.createElement('div');
+                        buttonContainer.style.display = 'inline-block'; // 保证按钮并排显示
+                        buttonContainer.appendChild(translateButton);
+                        buttonContainer.appendChild(cancelButton);
+
+                        // 按钮容器插入
+                        block.parentElement.insertBefore(buttonContainer, block.nextSibling.nextSibling);
+
+                        //
+                        block.translationContainer = translationContainer;
+
+                        // 取消翻译按钮点击事件
+                        cancelButton.addEventListener('click', () => {
+                            // 只移除当前块的翻译区域
+                            if (block.translationContainer) {
+                                block.translationContainer.remove(); // 移除翻译区域
+                                translateButton.disabled = false; // 恢复翻译按钮
+                                translateButton.textContent = '自动翻译'; // 恢复按钮文字
+                                cancelButton.remove(); // 移除取消按钮
+                                buttonContainer.remove(); // 移除按钮容器
+                                block.translationContainer = null; // 清空保存的翻译区域
+                            }
+                            // 将按钮插入到元素的后面
+                            block.parentElement.insertBefore(translateButton, block.nextSibling);
+                        });
+                    });
+
+                    // 将按钮插入到元素的后面
+                    block.parentElement.insertBefore(translateButton, block.nextSibling);
+                });
+            }
+
+            // 翻译 API 调用
+            async function translateText(text) {
+                try {
+                    const response = await fetch(`/ai/translate-chinese?input=${text}`, {
+                        method: 'GET',
+                    });
+                    const result = await response.json();
+                    return result.translatedText || '翻译失败';
+                } catch (error) {
+                    console.error('Translation error:', error);
+                    return '翻译出错';
+                }
+            }
+
+            // 图片翻译 API 调用
+            async function translateImage(url) {
+                try {
+                    const response = await fetch(`/ai/translate_img`, {
+                        method: 'Post',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ "input": url })
+                    });
+                    const result = await response.json();
+                    return result.translatedText || '翻译失败';
+                } catch (error) {
+                    console.error('Translation error:', error);
+                    return '图片翻译出错';
+                }
+            }
+
+            // 翻译代码注释 API 调用
+            async function translateCodeComments(code) {
+                try {
+                    const response = await fetch('/ai/translate-code-comments', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 'code': code }),
+                    });
+                    const result = await response.json();
+                    return result.translatedCode || code;
+                } catch (error) {
+                    console.error('Code comment translation error:', error);
+                    return code;
+                }
+            }
+
+        </script>
+
+
+    </div>
+
+
+</div>

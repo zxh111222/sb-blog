@@ -20,18 +20,29 @@
                 height: auto;
                 margin: 10px;
             }
+            .translation-buttons {
+                bottom: 10px;
+                right: 10px;
+                display: flex;
+            }
+            .translation-buttons button{
+                margin: 5px;
+            }
 
         </style>
     </div>
     <main id="main" class="my-2rem">
         <article class="blog-show container">
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-7">
                     <h1 th:text="${blog.title}">maven 加速，修改镜像源</h1>
                     <p class="meta text-muted mb-2rem"><a href="#">admin</a> - <i th:text="${#temporals.format(blog.created_at, 'yyyy-MM-dd HH:mm:ss')}"></i></p>
                     <div id="blog-content" class=" d-flex flex-column" th:data-content="${content_blocks}">
                     </div>
-
+                </div>
+                <div class="col-lg-7" style="margin: 40px">
+                    <div id="blog-translate-content" class=" d-flex flex-column" th:data-content="${content_blocks}">
+                    </div>
                 </div>
 <!--                <div class="col-lg-3 offset-lg-1">-->
 <!--                    <div id="outline" class="js-toc toc sticky-top d-none d-lg-block animate__animated animate__fadeInRight animate__delay-1s"></div>-->
@@ -51,6 +62,20 @@
                 contentBlocks.forEach((blockContent, index) => {
                     let blockDiv = document.createElement("div");
                     blockDiv.id = 'block-' + index;
+
+                    let translationButtons = document.createElement("div");
+                    translationButtons.classList.add("translation-buttons");
+
+                    let translateButton = document.createElement("button");
+                    translateButton.textContent = "自动翻译";
+
+                    let cancelTranslateButton = document.createElement("button");
+                    cancelTranslateButton.textContent = "取消翻译";
+                    translateButton.classList.add('btn', 'btn-link');
+                    cancelTranslateButton.classList.add('btn', 'btn-link');
+
+                    translationButtons.appendChild(translateButton);
+                    translationButtons.appendChild(cancelTranslateButton);
 
                     document.getElementById('blog-content').appendChild(blockDiv);
 
@@ -72,6 +97,8 @@
                         //     },
                         // }
                     });
+
+                    document.getElementById(blockDiv.id).appendChild(translationButtons);
 
 
                 })
