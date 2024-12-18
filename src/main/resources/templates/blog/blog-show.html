@@ -107,21 +107,46 @@
                     translateButton.addEventListener('click', async () =>{
                         let translateBlockDiv = document.createElement("div");
                         translateBlockDiv.classList.add('translated-block');
+                        translateBlockDiv.id = 'translateBlock-' + index;
 
                         // 获取当前块的内容和 id
                         const currentBlockId = blockDiv.id;
                         const currentBlockContent = blockContent;
 
+                        let translateTextContent = null;
+
                         if (markdownImg) {
-                            translateBlockDiv.textContent = await translateImage(currentBlockContent);
+                            translateTextContent = await translateImage(currentBlockContent);
+                            // translateBlockDiv.textContent = translateTextContent;
                             document.getElementById(currentBlockId).appendChild(translateBlockDiv);
                         } else if (blockDiv.className.includes('cherry-code-expand') ) {
-                            translateBlockDiv.textContent = await translateCodeComments(currentBlockContent)
+                            translateTextContent = await translateCodeComments(currentBlockContent);
+                            // translateBlockDiv.textContent = translateTextContent;
                             document.getElementById(currentBlockId).appendChild(translateBlockDiv);
                         } else {
-                            translateBlockDiv.textContent = await translateText(currentBlockContent);
+                            translateTextContent = await translateText(currentBlockContent);
+                            // translateBlockDiv.textContent = translateTextContent;
                             document.getElementById(currentBlockId).appendChild(translateBlockDiv);
                         }
+
+                        let cherry = new Cherry({
+                            id: translateBlockDiv.id,
+                            value: translateTextContent,
+                            editor: {
+                                defaultModel: 'previewOnly',
+                            },
+                            previewer: {
+                                enablePreviewerBubble: false,
+                            },
+                            // toolbars: {
+                            //     // 打开侧边目录
+                            //     toc: {
+                            //         updateLocationHash: true,
+                            //         defaultModel: 'pure',
+                            //         position: 'fixed',
+                            //     },
+                            // }
+                        });
 
                         translateButton.disabled = true;
                         translateButton.textContent = '翻译完成';
@@ -138,12 +163,6 @@
                     });
 
                 });
-
-
-
-
-
-
             });
 
 
