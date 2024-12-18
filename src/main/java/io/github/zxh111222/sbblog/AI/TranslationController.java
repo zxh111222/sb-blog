@@ -26,16 +26,18 @@ public class TranslationController {
         this.chatClient = builder.build();
     }
 
-    @GetMapping("/translate-chinese")
-    public Map<String, String> translateChineseToEnglish(@RequestParam String input) {
-        Prompt prompt = new Prompt("将以下这段中文文本翻译为英文(只管翻译，不需任何交流，不需要其他多余语言):" + input);
+    @PostMapping("/translate-chinese")
+    public Map<String, String> translateChineseToEnglish(@RequestBody Map<String, String> input) {
+        String text = input.get("input");
+        Prompt prompt = new Prompt("翻译为简洁英文(只管翻译，不需任何交流，不需要其他多余语言)保留的原本的格式和特殊字符(最开始的：除外)，从这个冒号开始后全部都是：" + text);
 
-
-        return Map.of(
+        Map<String, String> translatedText = Map.of(
                 "translatedText",
                 chatClient.prompt(prompt)
-                        .call().content()
-        );
+                        .call().content());
+
+
+        return translatedText;
     }
 
     @PostMapping("/translate_img")
@@ -67,7 +69,7 @@ public class TranslationController {
                 .build();
         MultiModalConversationResult result = conv.call(param);
         String chinese_text = (String) result.getOutput().getChoices().get(0).getMessage().getContent().get(0).get("text");
-        Prompt prompt = new Prompt("将以下这段中文文本翻译为英文(只管翻译，不需任何交流，不需要其他多余语言):" + chinese_text);
+        Prompt prompt = new Prompt("翻译为简洁英文(只管翻译，不需任何交流，不需要其他多余语言)保留原本的格式和特殊字符，从这个冒号开始后都是:" + chinese_text);
 
         return Map.of("translatedText",chatClient.prompt(prompt)
                 .call().content());
@@ -99,7 +101,7 @@ public class TranslationController {
 
         while (matcher.find()) {
             String comment = matcher.group();
-            Prompt prompt = new Prompt("将以下这段中文文本翻译为英文(只管翻译，不需任何交流，不需要其他多余语言):" + comment);
+            Prompt prompt = new Prompt("翻译为简洁英文(只管翻译，不需任何交流，不需要其他多余语言)保留原本的格式和特殊字符，从这个冒号开始后都是:" + comment);
             String translatedComment = chatClient.prompt(prompt)
                     .call().content();
             matcher.appendReplacement(translatedCode, translatedComment);

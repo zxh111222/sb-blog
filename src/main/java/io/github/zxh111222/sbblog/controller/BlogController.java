@@ -47,7 +47,7 @@ public class BlogController {
     public String show(@PathVariable Long id, Model model) {
         Optional<Blog> optionalBlog = blogRepository.findById(id);
 
-        List<String> contentBlocks = splitContent(String.valueOf(optionalBlog.get().getContent()), 300);
+        List<String> contentBlocks = splitContent(String.valueOf(optionalBlog.get().getContent()), 500);
         model.addAttribute("content_blocks", contentBlocks);
 
 
@@ -86,28 +86,12 @@ public class BlogController {
                 // 如果在代码块内，直接添加内容，不分割
                 currentBlock.append(line).append("\n");
             } else if (line.startsWith("#")) {
-                // 处理标题行
+                // 处理标题行，确保标题单独一块
                 if (currentBlock.length() > 0) {
                     blocks.add(currentBlock.toString().trim()); // 将上一块内容加入到 blocks
                     currentBlock.setLength(0); // 清空当前块
                 }
-                // 将标题行与接下来的文本内容一起加入到当前块
-                currentBlock.append(line).append("\n");
-
-                // 检查标题后是否有内容，如果有，将标题与后续内容合并
-                boolean nextLineHasContent = false;
-                for (int i = blocks.size(); i < lines.length; i++) {
-                    if (!lines[i].startsWith("#") && !lines[i].trim().isEmpty()) {
-                        nextLineHasContent = true;
-                        break;
-                    }
-                }
-
-                // 如果没有下文，则继续合并标题到下一块
-                if (!nextLineHasContent) {
-                    blocks.add(currentBlock.toString().trim()); // 如果没有下文内容，标题和空行加入一个块
-                    currentBlock.setLength(0); // 清空当前块
-                }
+                blocks.add(line.trim()); // 将标题单独加入一个新块
             } else {
                 // 处理正常文本内容
                 if (currentBlock.length() + line.length() > maxWords) {
