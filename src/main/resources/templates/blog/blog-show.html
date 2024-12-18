@@ -123,9 +123,21 @@
                             document.getElementById(currentBlockId).appendChild(translateBlockDiv);
                         }
 
-                    })
+                        translateButton.disabled = true;
+                        translateButton.textContent = '翻译完成';
 
-                })
+                        cancelTranslateButton.addEventListener('click', () => {
+                            if (translateBlockDiv) {
+                                translateBlockDiv.remove(); // 移除翻译区域
+                                translateButton.disabled = false; // 恢复翻译按钮
+                                translateButton.textContent = '自动翻译'; // 恢复按钮文字
+                                translateBlockDiv.textContent = null; // 清空保存的翻译区域
+                            }
+                        });
+
+                    });
+
+                });
 
 
 
