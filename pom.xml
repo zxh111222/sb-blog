@@ -90,6 +90,14 @@
             <artifactId>spring-ai-alibaba-starter</artifactId>
             <version>1.0.0-M2</version>
         </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-mysql</artifactId>
+        </dependency>
 
 
 
