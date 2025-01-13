@@ -1,4 +1,6 @@
-<div th:replace="~{ app :: layout ('个人主页', _, ~{::#main}, _) }" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<div th:replace="~{ app :: layout ('个人主页', ~{::#css}, ~{::#main}, _) }" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+  <link id="css" rel="stylesheet" href="/webjars/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" />
+
   <div class="container user-center my-2rem" id="main">
     <div class="row">
       <div class="col-lg-3">
@@ -12,6 +14,7 @@
             <ul class="nav flex-column">
               <li class="nav-item">
                 <a href="#" th:href="@{/user/dashboard}" class="nav-link" th:class="|nav-link ${#strings.startsWith(requestURI, '/user/dashboard') ? ' active' : ''}|">
+                  <i class="bi bi-info-circle"></i>
                   个人资料
                 </a>
               </li>
