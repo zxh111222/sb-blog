@@ -29,6 +29,13 @@ public class UserController {
 
     @PostMapping("register")
     public String register(@ModelAttribute("user") UserDTO user) {
+        String email = user.getEmail();
+        String username = user.getName();
+
+        if (username == null || username.isEmpty()) {
+            username = email.split("@")[0];
+        }
+
         userService.save(user);
 
         return "redirect:/";
