@@ -1,4 +1,4 @@
-<div th:replace="~{ app :: layout ('用户注册', _, ~{::#main}, _) }" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<div th:replace="~{ app :: layout ('用户注册', _, ~{::#main}, ~{::#js}) }" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
   <div id="main" class="container my-2rem">
     <div class="row justify-content-center">
       <div class="col-lg-8">
@@ -60,4 +60,19 @@
       </div>
     </div>
   </div>
+
+  <script id="js">
+    window.onload = function() {
+      const emailInput = document.querySelector("#email");
+      const usernameInput = document.querySelector("#name");
+
+      emailInput.addEventListener("input", function() {
+        const emailValue = emailInput.value;
+        const name = emailValue.split("@")[0]; // 提取 @ 之前的内容
+        usernameInput.value = name;
+      });
+    }
+  </script>
+
+
 </div>
