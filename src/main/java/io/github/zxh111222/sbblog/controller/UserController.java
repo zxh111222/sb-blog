@@ -1,15 +1,12 @@
 package io.github.zxh111222.sbblog.controller;
 
 import io.github.zxh111222.sbblog.dto.UserDTO;
-import io.github.zxh111222.sbblog.entity.User;
 import io.github.zxh111222.sbblog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("user")
@@ -31,8 +28,9 @@ public class UserController {
     }
 
     @PostMapping("register")
-    public String register() {
-        userService.save();
+    public String register(@ModelAttribute("user") UserDTO user) {
+        userService.save(user);
+
         return "redirect:/";
     }
 
