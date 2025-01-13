@@ -14,4 +14,9 @@ public class UserController {
     public String dashboard(){
         return "/user/dashboard";
     }
+
+    @GetMapping("register")
+    public String register(){
+        return "/user/register";
+    }
 }
