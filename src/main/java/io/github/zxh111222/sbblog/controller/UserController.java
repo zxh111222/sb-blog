@@ -32,9 +32,9 @@ public class UserController {
 
     @PostMapping("register")
     public String register(@Valid @ModelAttribute("user") UserDTO user, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            return "/user/register";  // 如果有错误，返回注册页面
-        }
+//        if (bindingResult.hasErrors()) {
+//            return "/user/register";  // 如果有错误，返回注册页面
+//        }
         try {
             String email = user.getEmail();
             String username = user.getName();

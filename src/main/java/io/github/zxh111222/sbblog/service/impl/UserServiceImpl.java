@@ -39,12 +39,20 @@ public class UserServiceImpl implements UserService {
         String checkPassword = userDTO.getCheckPassword();
 
         // 校验
-        // 非空 - 不用再验证
-//        if (StringUtils.isAnyBlank(username, email, password, checkPassword)) {
-//            throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数为空");
-//        }
-        // 账户长度3-15位之间 - 不用再验证
-        // 密码不小于6位 - 不用再验证
+        // 非空
+        if (StringUtils.isAnyBlank(username, email, password, checkPassword)) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数为空");
+        }
+        // 账户长度3-15位之间
+        if (username.length() < 3) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户名长度应该在3到15之间");
+        } else if (username.length() > 15) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户名长度应该在3到15之间");
+        }
+        // 密码不小于6位
+        if (password.length() < 6 || checkPassword.length() < 6) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户密码过短");
+        }
         // 账户不能包含特殊字符
         String validPattern = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
         Matcher matcher = Pattern.compile(validPattern).matcher(username);
