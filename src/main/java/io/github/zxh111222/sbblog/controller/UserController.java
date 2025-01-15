@@ -35,6 +35,11 @@ public class UserController {
 
     @PostMapping("register")
     public String register(@Valid @ModelAttribute UserDTO userDTO, BindingResult result) {
+        // 根据邮箱查询数据库
+        User existingUser =  userService.findByEmail(userDTO.getEmail());
+        if (existingUser != null){
+            result.rejectValue("email", "exist", "该邮箱已被注册");
+        }
         if (result.hasErrors()){
             return "/user/register";
         }
