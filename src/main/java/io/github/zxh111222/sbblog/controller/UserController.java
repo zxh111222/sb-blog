@@ -3,6 +3,8 @@ package io.github.zxh111222.sbblog.controller;
 import io.github.zxh111222.sbblog.dto.UserDTO;
 import io.github.zxh111222.sbblog.entity.User;
 import io.github.zxh111222.sbblog.service.UserService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,8 +36,7 @@ public class UserController {
     }
 
     @PostMapping("register")
-    public String register(@Valid @ModelAttribute UserDTO userDTO, BindingResult result) {
-        // 根据邮箱查询数据库
+    public String register(@Valid @ModelAttribute("user") UserDTO userDTO, BindingResult result, HttpServletRequest httpServletRequest) throws ServletException {        // 根据邮箱查询数据库
         User existingUser =  userService.findByEmail(userDTO.getEmail());
         if (existingUser != null){
             result.rejectValue("email", "exist", "该邮箱已被注册");
@@ -44,6 +45,10 @@ public class UserController {
             return "/user/register";
         }
         userService.save(userDTO);
+
+        // 帮该用户自动登录
+        httpServletRequest.login(userDTO.getEmail(), userDTO.getPassword());
+
         return "redirect:/";
     }
 
