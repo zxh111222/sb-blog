@@ -43,7 +43,7 @@ public class UserController {
         if (result.hasErrors()){
             return "/user/register";
         }
-        userService.save();
+        userService.save(userDTO);
         return "redirect:/";
     }
 
