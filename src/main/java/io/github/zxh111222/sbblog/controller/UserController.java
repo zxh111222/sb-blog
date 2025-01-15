@@ -34,9 +34,8 @@ public class UserController {
     }
 
     @PostMapping("register")
-    public String register(@Valid @ModelAttribute UserDTO userDTO, BindingResult result, Model model) {
+    public String register(@Valid @ModelAttribute UserDTO userDTO, BindingResult result) {
         if (result.hasErrors()){
-            model.addAttribute("user", userDTO);
             return "/user/register";
         }
         userService.save();
