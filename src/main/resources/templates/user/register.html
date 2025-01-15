@@ -22,28 +22,28 @@
               <div class="row mb-3 justify-content-center">
                 <div class="col-lg-6">
                   <input placeholder="邮箱" th:field="*{email}" id="email" type="email" class="form-control" th:class="|form-control ${#fields.hasErrors('email') ? 'is-invalid' : ''}|" name="email" required autofocus>
-                  <span th:if="${#fields.hasErrors('email')}" class="invalid-feedback" role="alert"><strong th:errors = "*{email}"></strong></span>
+<!--                  <span th:if="${#fields.hasErrors('email')}" class="invalid-feedback" role="alert"><strong th:errors = "*{email}"></strong></span>-->
                 </div>
               </div>
 
               <div class="row mb-3 justify-content-center">
                 <div class="col-lg-6">
                   <input placeholder="用户名" th:field="*{name}" id="name" type="text" class="form-control" th:class="|form-control ${#fields.hasErrors('name') ? 'is-invalid' : ''}|" name="name" required>
-                  <span th:if="${#fields.hasErrors('name')}" class="invalid-feedback" role="alert"><strong th:errors = "*{name}"></strong></span>
+<!--                  <span th:if="${#fields.hasErrors('name')}" class="invalid-feedback" role="alert"><strong th:errors = "*{name}"></strong></span>-->
                 </div>
               </div>
 
               <div class="row mb-3 justify-content-center">
                 <div class="col-lg-6">
                   <input placeholder="密码" th:field="*{password}" id="password" type="password" class="form-control" th:class="|form-control ${#fields.hasErrors('password') ? 'is-invalid' : ''}|" name="password" required autocomplete="password">
-                  <span th:if="${#fields.hasErrors('password')}" class="invalid-feedback" role="alert"><strong th:errors = "*{password}"></strong></span>
+<!--                  <span th:if="${#fields.hasErrors('password')}" class="invalid-feedback" role="alert"><strong th:errors = "*{password}"></strong></span>-->
                 </div>
               </div>
 
               <div class="row mb-3 justify-content-center">
                 <div class="col-lg-6">
                   <input placeholder="校验密码" th:field="*{checkPassword}" id="checkPassword" type="password" class="form-control" th:class="|form-control ${#fields.hasErrors('checkPassword') ? 'is-invalid' : ''}|" name="checkPassword" required autocomplete="checkPassword">
-                  <span th:if="${#fields.hasErrors('checkPassword')}" class="invalid-feedback" role="alert"><strong th:errors = "*{checkPassword}"></strong></span>
+<!--                  <span th:if="${#fields.hasErrors('checkPassword')}" class="invalid-feedback" role="alert"><strong th:errors = "*{checkPassword}"></strong></span>-->
                 </div>
               </div>
 
