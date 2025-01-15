@@ -39,3 +39,4 @@ upload
 /src/main/resources/static/build
 
 application-dev.properties
+application-test.properties
