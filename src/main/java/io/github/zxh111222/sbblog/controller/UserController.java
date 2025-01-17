@@ -100,7 +100,7 @@ public class UserController {
                         <a href='%s/user/do-password-reset'>重置密码</a>                        <p>链接将在 30 分钟后失效，请尽快操作</p>
                     </body>
                 </html>
-                """.formatted(baseUrl));
+                """.formatted(baseUrl), true);
 
         sender.send(message);
         redirectAttributes.addFlashAttribute("success", "密码重置邮箱已发送，请注意查收");
