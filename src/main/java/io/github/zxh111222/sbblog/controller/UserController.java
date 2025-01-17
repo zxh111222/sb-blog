@@ -1,5 +1,6 @@
 package io.github.zxh111222.sbblog.controller;
 
+import io.github.zxh111222.sbblog.dto.PasswordResetDTO;
 import io.github.zxh111222.sbblog.dto.PasswordResetEmailDTO;
 import io.github.zxh111222.sbblog.dto.UserDTO;
 import io.github.zxh111222.sbblog.entity.PasswordResetToken;
@@ -76,7 +77,7 @@ public class UserController {
         return "user/password-reset";
     }
 
-    @PostMapping
+    @PostMapping("password-reset")
     public String passwordReset(
             @Valid @ModelAttribute("passwordResetEmail") PasswordResetEmailDTO passwordResetEmailDTO,
             BindingResult result,
@@ -95,7 +96,7 @@ public class UserController {
         // 发送邮件
         MimeMessage message = sender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
-        helper.setFrom(new InternetAddress("3345973813@qq.com", "客服"));
+        helper.setFrom(new InternetAddress("1305894626@qq.com", "客服"));
         helper.setSubject("重置密码");
         helper.setTo(passwordResetEmailDTO.getEmail());
         String scheme = httpServletRequest.getScheme();
@@ -137,7 +138,35 @@ public class UserController {
         } else if (passwordResetToken.getExpirationDate().isBefore(LocalDateTime.now())) {
             model.addAttribute("error", "token 已过期");
         }
+
+        PasswordResetDTO passwordResetDTO = new PasswordResetDTO();
+        passwordResetDTO.setToken(token);
+        model.addAttribute("passwordResetDTO", passwordResetDTO);
+
         return "user/do-password-reset";
+    }
+
+    @PostMapping("do-password-reset")
+    public String passwordReset(@Valid @ModelAttribute("passwordResetDTO") PasswordResetDTO passwordResetDTO,
+                                BindingResult result
+    ){
+        // 额外校验
+        if (!passwordResetDTO.getPassword().equals(passwordResetDTO.getConfirmPassword())){
+            result.rejectValue("password", "error-ConfirmPassword", "两次密码输入不一致");
+        }
+
+        // 自动校验
+        if (result.hasErrors()) {
+            return "user/do-password-reset";
+        }
+
+        String token = passwordResetDTO.getToken();
+        PasswordResetToken passwordResetToken = passwordResetTokenService.findFirstByToken(token);
+        User user = passwordResetToken.getUser();
+        user.setPassword(passwordResetDTO.getPassword());
+        userService.updatePassword(user);
+
+        return "redirect:/login";
     }
 
 }

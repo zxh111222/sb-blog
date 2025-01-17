@@ -38,4 +38,10 @@ public class UserServiceImpl implements UserService {
         Optional<User> firstByEmail = userRepository.findFirstByEmail(email);
         return firstByEmail.orElse(null);
     }
+
+    @Override
+    public void updatePassword(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+    }
 }

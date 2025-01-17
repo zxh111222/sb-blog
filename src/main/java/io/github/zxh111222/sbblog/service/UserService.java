@@ -9,4 +9,6 @@ public interface UserService {
     void save(UserDTO userDTO);
 
     User findByEmail(@Email String email);
+
+    void updatePassword(User user);
 }
