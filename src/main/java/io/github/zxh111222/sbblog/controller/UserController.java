@@ -52,4 +52,9 @@ public class UserController {
         return "redirect:/";
     }
 
+    @GetMapping("password-reset")
+    public String showPasswordResetForm(){
+        return "user/password-reset";
+    }
+
 }
