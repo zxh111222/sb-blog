@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("user")
@@ -62,7 +63,9 @@ public class UserController {
     @PostMapping
     public String passwordReset(
             @Valid @ModelAttribute("passwordResetEmail") PasswordResetEmailDTO passwordResetEmailDTO,
-            BindingResult result){
+            BindingResult result,
+            RedirectAttributes redirectAttributes
+    ){
         // 检查邮箱是否存在
         User existingUser = userService.findByEmail(passwordResetEmailDTO.getEmail());
         if (existingUser == null){
@@ -74,6 +77,8 @@ public class UserController {
         }
 
         // todo: 发送邮件
+
+        redirectAttributes.addFlashAttribute("success", "密码重置邮箱已发送，请注意查收");
 
         return "redirect:/user/password-reset";
     }
