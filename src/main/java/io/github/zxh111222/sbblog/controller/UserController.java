@@ -71,8 +71,8 @@ public class UserController {
     public String passwordReset(
             @Valid @ModelAttribute("passwordResetEmail") PasswordResetEmailDTO passwordResetEmailDTO,
             BindingResult result,
-            RedirectAttributes redirectAttributes
-    ) throws Exception {
+            RedirectAttributes redirectAttributes,
+            HttpServletRequest httpServletRequest    ) throws Exception {
         // 检查邮箱是否存在
         User existingUser = userService.findByEmail(passwordResetEmailDTO.getEmail());
         if (existingUser == null){
@@ -89,14 +89,18 @@ public class UserController {
         helper.setFrom(new InternetAddress("3345973813@qq.com", "客服"));
         helper.setSubject("重置密码");
         helper.setTo(passwordResetEmailDTO.getEmail());
+        String scheme = httpServletRequest.getScheme();
+        String serverName = httpServletRequest.getServerName();
+        int port = httpServletRequest.getServerPort();
+        String baseUrl = scheme + "://" + serverName + ":" + port;
         helper.setText("""
                 <html>
                     <body>
                         <p>点击以下链接进行密码重置</p>
-                        <a href='http://localhost:8080/user/do-password-reset'>重置密码</a>                        <p>链接将在 30 分钟后失效，请尽快操作</p>
+                        <a href='%s/user/do-password-reset'>重置密码</a>                        <p>链接将在 30 分钟后失效，请尽快操作</p>
                     </body>
                 </html>
-                """);
+                """.formatted(baseUrl));
 
         sender.send(message);
         redirectAttributes.addFlashAttribute("success", "密码重置邮箱已发送，请注意查收");
