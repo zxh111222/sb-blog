@@ -1,5 +1,6 @@
 package io.github.zxh111222.sbblog.controller;
 
+import io.github.zxh111222.sbblog.dto.PasswordResetEmailDTO;
 import io.github.zxh111222.sbblog.dto.UserDTO;
 import io.github.zxh111222.sbblog.entity.User;
 import io.github.zxh111222.sbblog.service.UserService;
@@ -53,8 +54,28 @@ public class UserController {
     }
 
     @GetMapping("password-reset")
-    public String showPasswordResetForm(){
+    public String showPasswordResetForm(Model model){
+        model.addAttribute("passwordResetEmail", new PasswordResetEmailDTO());
         return "user/password-reset";
+    }
+
+    @PostMapping
+    public String passwordReset(
+            @Valid @ModelAttribute("passwordResetEmail") PasswordResetEmailDTO passwordResetEmailDTO,
+            BindingResult result){
+        // 检查邮箱是否存在
+        User existingUser = userService.findByEmail(passwordResetEmailDTO.getEmail());
+        if (existingUser == null){
+            result.rejectValue("email", "non-existent", "该邮箱不存在");
+        }
+
+        if (result.hasErrors()){
+            return "user/password-reset";
+        }
+
+        // todo: 发送邮件
+
+        return "redirect:/user/password-reset";
     }
 
 }
