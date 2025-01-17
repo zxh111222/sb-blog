@@ -94,14 +94,20 @@ public class UserController {
         String serverName = httpServletRequest.getServerName();
         int port = httpServletRequest.getServerPort();
         String baseUrl = scheme + "://" + serverName + ":" + port;
+        // todo : 自动生成随机 token
+        // token 要与 用户关联
+        // token 要 记录时间
+        String token = "zxh12345";
+        Long id = existingUser.getId();
+
         helper.setText("""
                 <html>
                     <body>
                         <p>点击以下链接进行密码重置</p>
-                        <a href='%s/user/do-password-reset?token=xxx123xxx'>重置密码</a>                        <p>链接将在 30 分钟后失效，请尽快操作</p>
+                        <a href='%s/user/do-password-reset?token=%s'>重置密码</a>                        <p>链接将在 30 分钟后失效，请尽快操作</p>
                     </body>
                 </html>
-                """.formatted(baseUrl), true);
+                """.formatted(baseUrl, token), true);
 
         sender.send(message);
         redirectAttributes.addFlashAttribute("success", "密码重置邮箱已发送，请注意查收");
